@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>❤️ Valentine Surprise</title>
+    <!-- Konfetti-kirjasto -->
+    <script src="https://cdn.jsdelivr.net/npm/js-confetti@latest/dist/js-confetti.browser.js"></script>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #ffe6f0, #ffb3cc);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .heart {
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            background-color: #ff6584;
+            transform: rotate(45deg);
+            animation: floatUp 8s linear infinite;
+            opacity: 0.85;
+        }
+        .heart::before, .heart::after {
+            content: "";
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            background-color: #ff6584;
+            border-radius: 50%;
+        }
+        .heart::before { top: -12px; left: 0; }
+        .heart::after { left: -12px; top: 0; }
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) rotate(45deg); opacity: 0; }
+            20% { opacity: 1; }
+            100% { transform: translateY(-10vh) rotate(45deg); opacity: 0; }
+        }
+
+        #content {
+            position: relative;
+            z-index: 10;
+            animation: fadeIn 1.5s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            color: #7a0c4e;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+            margin-bottom: 20px;
+        }
+
+        #heartGif {
+            width: 80%;
+            max-width: 350px;
+            margin-bottom: 25px;
+            border-radius: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 16px 36px;
+            margin: 12px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+        .btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+        }
+        #yesBtn { background: #28a745; }
+        #noBtn { background: #dc3545; }
+
+        #finalMessage {
+            font-size: 1.6rem;
+            color: #52002e;
+            margin-top: 25px;
+            font-weight: bold;
+        }
+
+        /* 💬 Popup-viesti */
+        .popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: white;
+            color: #b30059;
+            font-size: 1.8rem;
+            padding: 22px 28px;
+            border-radius: 18px;
+            box-shadow: 0 8px 22px rgba(0,0,0,0.2);
+            z-index: 20;
+            transition: transform 0.3s ease-out;
+        }
+        .popup.show {
+            transform: translate(-50%, -50%) scale(1);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Taustasydämet -->
+    <script>
+        for (let i = 0; i < 20; i++) {
+            const heart = document.createElement("div");
+            heart.className = "heart";
+            heart.style.left = Math.random() * 100 + "%";
+            heart.style.animationDuration = (5 + Math.random() * 6) + "s";
+            document.body.appendChild(heart);
+        }
+    </script>
+
+    <div id="content">
+        <h1>Will You Be My Valentine?</h1>
+        <img id="heartGif" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExaXljM3BvOGljMWVlb2ljNG5hdnp0bHM3aDFwYWltbWVicmd1OXpjdyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/kZiDpAW9d9fr2suuS7/giphy.gif" alt="Valentine GIF">
+
+        <button id="yesBtn" class="btn">YES</button>
+        <button id="noBtn" class="btn">NO</button>
+
+        <div id="finalMessage"></div>
+    </div>
+
+    <!-- 💬 Popup -->
+    <div id="popupMessage" class="popup">You just made my day! 💕</div>
+
+    <script>
+        const jsConfetti = new JSConfetti();
+        const yesBtn = document.getElementById("yesBtn");
+        const noBtn = document.getElementById("noBtn");
+        const finalMessage = document.getElementById("finalMessage");
+        const popup = document.getElementById("popupMessage");
+        let noClicked = false;
+
+        yesBtn.addEventListener("click", () => {
+            // 🎉 Konfettisade
+            jsConfetti.addConfetti({
+              confettiColors: ['#ff0a54', '#ff85a1', '#fbb1bd', '#f9bec7'],
+              confettiNumber: 150
+            });
+
+            // ✨ Aktivoi popup
+            popup.classList.add("show");
+            setTimeout(() => popup.classList.remove("show"), 2500);
+
+            // Avataan koira GIF uuteen ikkunaan
+            window.open("https://media.giphy.com/media/26xBI73gWquCBBCDe/giphy.gif");
+        });
+
+        noBtn.addEventListener("click", () => {
+            if (!noClicked) {
+                noClicked = true;
+                finalMessage.textContent = "YOU JUST HAD TO TRY IT, DIDN'T YOU?";
+                noBtn.style.display = "none";
+
+                const warning = document.createElement("h1");
+                warning.textContent = "YOU LEFT ME NO CHOICE — NOW YOU HAVE ONLY ONE OPTION!";
+                warning.style.fontSize = "1.6rem";
+                warning.style.color = "#4a001f";
+                warning.style.marginTop = "15px";
+                document.getElementById("content").prepend(warning);
+            }
+        });
+    </script>
+
+</body>
+</html>
